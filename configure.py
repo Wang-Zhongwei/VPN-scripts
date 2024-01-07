@@ -88,7 +88,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        help="Configure WireGuard tunnels for a user's devices"
+        description="Configure WireGuard tunnels for a user's devices"
     )
 
     parser.add_argument("username", help="Username")
