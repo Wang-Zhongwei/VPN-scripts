@@ -59,12 +59,7 @@ def remove_user_devices_from_wg(username, devices=[], block_width=5):
         devices (list, optional): list of user's devices. Defaults to [] means remove all devices
         block_width (int, optional): block_width of user's device content in the wg0.conf. Defaults to 5.
     """
-
     try:
-        # Read the current WireGuard configuration
-        with open(WG_CONF, "r") as file:
-            lines = file.readlines()
-
         # Find and remove the section corresponding to the expired user
         new_lines = []
 
@@ -77,6 +72,11 @@ def remove_user_devices_from_wg(username, devices=[], block_width=5):
             # remove all devices
             peer_pattern = re.compile(r"#\s*" + re.escape(username))
 
+        # Read the current WireGuard configuration
+        command = ['sudo', 'cat', WG_CONF]
+        result = subprocess.run(command, capture_output=True, text=True)
+        lines = result.stdout.split('\n')
+
         i, num_lines = 0, len(lines)
         while i < num_lines:
             if re.search(peer_pattern, lines[i]):
@@ -86,8 +86,9 @@ def remove_user_devices_from_wg(username, devices=[], block_width=5):
             i += 1
 
         # Write the updated configuration back to the file
-        with open(WG_CONF, "w") as file:
-            file.writelines(new_lines)
+        new_config = '\n'.join(new_lines)
+        command = ['sudo', 'bash', '-c', f'echo "{new_config}" > {WG_CONF}']
+        subprocess.run(command, check=True)
 
         print(f"{username}'s {' '.join(devices)} removed from WireGuard configuration.")
 

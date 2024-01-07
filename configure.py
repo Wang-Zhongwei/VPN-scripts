@@ -95,7 +95,7 @@ if __name__ == "__main__":
     parser.add_argument("devices", nargs="+", help="Device names")
     parser.add_argument("--expiry_date", help="Expiry date of the subscription")
     parser.add_argument(
-        "-rm", "--remove", help="Remove user from nodes", action="store_false"
+        "-rm", "--remove", help="Remove user from nodes", action="store_true"
     )
 
     args = parser.parse_args()
@@ -103,6 +103,7 @@ if __name__ == "__main__":
     devices = args.devices
     expiry_date = args.expiry_date
     to_remove = args.remove
+
 
     if to_remove:
         remove_user_devices_from_wg(username, devices)
