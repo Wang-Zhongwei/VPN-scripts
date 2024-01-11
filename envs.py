@@ -1,7 +1,7 @@
 import os
 
 SUBNET_PREFIX = "10"
-WIREGUARD_PORT = 51820
+WIREGUARD_PORT = 443 # change to 443 to avoid internet censorship
 DNS_SERVER = "8.8.8.8"
 KEEP_ALIVE = 30
 ALLOWED_IPS = "0.0.0.0/0"
