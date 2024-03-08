@@ -5,7 +5,7 @@ from envs import *
 from manage_subscription import load_json, save_json
 
 
-def load_json(filename):
+def load_json(filename) -> dict:
     try:
         with open(filename, "r") as file:
             return json.load(file)
