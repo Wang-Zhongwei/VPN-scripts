@@ -37,7 +37,8 @@ def remove_expired_users():
     for user, _ in list(subscriptions.items()):
         if user_is_expired(user, subscriptions):
             # Remove expired user from ip_mappings
-            ip_mappings.pop(user)
+            if user in ip_mappings:
+                ip_mappings.pop(user)
             remove_user_devices_from_wg(user)
             restart_wireguard = True
 
