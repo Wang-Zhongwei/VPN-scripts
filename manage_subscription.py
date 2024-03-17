@@ -77,11 +77,13 @@ def remove_user_devices_from_wg(username, devices=[], block_width=5):
         command = ['sudo', 'cat', WG_CONF]
         result = subprocess.run(command, capture_output=True, text=True)
         lines = result.stdout.split('\n')
-
+        
+        flag = False
         i, num_lines = 0, len(lines)
         while i < num_lines:
             if re.search(peer_pattern, lines[i]):
                 i += block_width
+                flag = True
                 continue
             new_lines.append(lines[i])
             i += 1
@@ -91,7 +93,8 @@ def remove_user_devices_from_wg(username, devices=[], block_width=5):
         command = ['sudo', 'bash', '-c', f'echo "{new_config}" > {WG_CONF}']
         subprocess.run(command, check=True)
 
-        print(f"{username}'s {' '.join(devices)} removed from WireGuard configuration.")
+        if flag: 
+            print(f"{username}'s {' '.join(devices)} removed from WireGuard configuration.")
 
     except Exception as e:
         print(f"Failed to remove user from WireGuard configuration: {e}")
