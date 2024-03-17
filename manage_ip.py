@@ -51,7 +51,7 @@ def generate_unique_ip(username, device_name):
 
     # Check if this user+device already has an assigned IP
     if username in mappings and device_name in mappings[username]:
-        raise Exception(f"{username} - {device_name} already has an assigned IP")
+        return mappings[username][device_name]
 
     # No existing IP, so find a new one
     new_ip = find_new_ip(mappings, username, device_name)

@@ -20,11 +20,12 @@ def configure_server(username, device_name):
     with open("public.key", "r") as file:
         client_public_key = file.read().strip()
 
-    # Assign a unique IP address
-    try:
-        client_ip = generate_unique_ip(username, device_name)
-    except Exception:
-        print(f"Skip server configuration for {username} on {device_name}")
+    client_ip = generate_unique_ip(username, device_name)
+
+    # load content of WG_CONF
+    wg_conf = subprocess.check_output(["sudo", "cat", WG_CONF]).decode()
+    if wg_conf.find(f"AllowedIPs = {client_ip}/32")!= -1:
+        print(f"Server configuration for {username} on {device_name} already exists.")
         return
 
     # Append the necessary information to the WireGuard configuration file
